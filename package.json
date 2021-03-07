@@ -1,0 +1,28 @@
+{
+  "name": "lender-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-modules --es-module-specifier-resolution=node",
+    "dev": "nodemon --experimental-modules --es-module-specifier-resolution=node",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Drew Blincoe",
+  "license": "ISC",
+  "dependencies": {
+    "@graphql-modules/core": "^0.7.17",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.5.0",
+    "graphql-tag": "^2.11.0",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.5.1",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
