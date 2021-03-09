@@ -23,5 +23,6 @@ const TableColumn = db.define("table_column", {
 });
 
 TableColumn.belongsTo(Table, { as: "table" });
+Table.hasMany(TableColumn, {foreignKey: "tableId", as: "columns"})
 
 export default TableColumn;

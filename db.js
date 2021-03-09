@@ -1,6 +1,12 @@
+import dotenv from 'dotenv';
 import Sequelize from "sequelize";
 
-const db = new Sequelize("dynamic", "postgres", "password", {
+dotenv.config();
+
+const { DB, USER, PASSWORD } = process.env;
+
+const db = new Sequelize(DB, USER, PASSWORD, {
+  host: "localhost",
   dialect: "postgres",
   logging: false,
 });
