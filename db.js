@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 import Sequelize from "sequelize";
 
 dotenv.config();
@@ -10,5 +10,10 @@ const db = new Sequelize(DB, USER, PASSWORD, {
   dialect: "postgres",
   logging: false,
 });
+
+db.authenticate().then(
+  () => console.log("Success"),
+  (err) => console.log(err)
+);
 
 export default db;

@@ -1,42 +1,59 @@
-import User from './models/user';
-import jwt from 'jsonwebtoken';
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 
-export const saveCurrentUser = async({req}) => {
-    let authToken = null;
-    let currentUser = null;
+import User from "./models/user";
 
-    try{
-      authToken = req.headers.authorization;
+dotenv.config();
 
-      if(authToken){
-        const verified = await jwt.verify(authToken, 'secret');
-        if(verified){
-            currentUser = await User.findOne({where: {id: verified.id}});
-        }else{
-            throw new Error("Could not authenticate")
-        }
-      }
+const { JWT_SECRET } = process.env;
 
+export const saveCurrentUser = async ({ req }) => {
+  let authToken = null;
+  let currentUser = null;
 
-    }catch(error){
-      console.warn(`Could not authenticate with token ${authToken}`)
+  try {
+    authToken = req.headers.authorization;
+
+    if (authToken) {
+      const user = await tradeTokenForUser(authToken);
+
+      currentUser = user;
     }
+  } catch (error) {
+    console.warn(`Could not authenticate with token ${authToken}`);
+  }
 
-    return {
-      authToken,
-      currentUser
-    }
-}
+  return {
+    authToken,
+    currentUser,
+  };
+};
 
-export const authenticated = next => (root, args, context, info) => {
-    console.log(context.currentUser)
-    if(!context.currentUser){
-        throw new Error('Unathenticated')
-    };
+export const isAuthenticated = () => (next) => (root, args, context, info) => {
+  if (!context.currentUser) {
+    throw new Error("Unathenticated");
+  }
 
-    return next(root, args, context, info);
-}
+  return next(root, args, context, info);
+};
 
-export const tradeTokenForUser = (token) => {
-    console.log(token)
-}
+export const createSessionToken = (userId) => {
+  try {
+    return jwt.sign({ id: userId }, JWT_SECRET, {
+      expiresIn: 60 * 60 * 12,
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+export const tradeTokenForUser = async (token) => {
+  try {
+    const decoded = await jwt.verify(token, JWT_SECRET);
+    const user = await User.findOne({ where: { id: decoded.id } });
+
+    return user;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
