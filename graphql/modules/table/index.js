@@ -33,8 +33,10 @@ export const TableModule = new GraphQLModule({
         injector.get(TableProvider).getByUserId(userId),
     },
     Mutation: {
-      addTable: (root, { table }, { injector }) =>
-        injector.get(TableProvider).addTable(table),
+      addTable: (root, { table }, { injector, currentUser }) =>
+        injector.get(TableProvider).addTable(table, currentUser),
+      
+      addColumns: (root, {columns, tableId}, {injector}) => injector.get(TableProvider).addColumns(columns, tableId)
     },
   },
 });

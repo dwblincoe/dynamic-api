@@ -16,16 +16,19 @@ export default class TableProvider {
         return tables;
     }
 
-    addTable = async(table) => {
-        const {name, columns} = table;
-        const newTable = await Table.create({name, userId: 1});
+    addTable = async(table, user) => {
+        const newTable = await Table.create({...table, userId: user.id});
 
-        let newTableColumns = columns.map(async (column) => {
-            const newColumn = await TableColumn.create({...column, tableId: newTable.id});
-            return newColumn;
-        });
+        return newTable;
+    }
 
-        return {...newTable.dataValues, columns: newTableColumns};
-        
+    addColumns = async (columns, tableId) => {
+        let newColumns = columns.map(async column => {
+            const added = await TableColumn.create({...column, tableId});
+
+            return added;
+        })
+
+        return newColumns;
     }
 }
