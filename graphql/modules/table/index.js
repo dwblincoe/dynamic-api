@@ -24,8 +24,8 @@ export const TableModule = new GraphQLModule({
   ],
   context: saveCurrentUser,
   resolversComposition: {
-    "Query.getUserTables": [isAuthenticated()],
-    "Mutation.addTable": [isAuthenticated()],
+    "Query.*": [isAuthenticated()],
+    "Mutation.*": [isAuthenticated()],
   },
   resolvers: {
     Query: {

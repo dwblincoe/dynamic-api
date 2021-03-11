@@ -7,8 +7,6 @@ import { typeDef as MutationType } from "./types/MutationType";
 import { typeDef as SignInUserType } from "./types/SignInUserType";
 import { typeDef as AuthUserType } from "./types/AuthUserType";
 
-import { resolversComposition } from "../../directive-guard";
-
 import { UserProvider } from "../../providers";
 import { saveCurrentUser, isAuthenticated } from "../../../auth-helpers";
 
@@ -24,7 +22,9 @@ export const UserModule = new GraphQLModule({
     AuthUserType,
   ],
   context: saveCurrentUser,
-  schemaDirectives: { auth: resolversComposition },
+  resolversComposition: {
+    'Query.*': [isAuthenticated()]
+  },
   resolvers: {
     Query: {
       getUsers: (root, args, { injector }) =>
