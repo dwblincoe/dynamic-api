@@ -8,7 +8,7 @@ const { DB, USER, PASSWORD } = process.env;
 const db = new Sequelize(DB, USER, PASSWORD, {
   host: "localhost",
   dialect: "postgres",
-  logging: false,
+  // logging: false,
 });
 
 db.authenticate().then(

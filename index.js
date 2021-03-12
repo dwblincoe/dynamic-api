@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import express from "express";
 import { graphqlHTTP } from "express-graphql";
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from "apollo-server";
 
 import { appModule } from "./graphql";
 import db from "./db.js ";
@@ -22,8 +22,8 @@ const app = express();
 const server = new ApolloServer({
   schema,
   graphiql: true,
-  context
-})
+  context,
+});
 
 db.sync();
 
